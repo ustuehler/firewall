@@ -22,8 +22,10 @@ class Chef
     include FirewallCookbook::Helpers
     include FirewallCookbook::Helpers::Iptables
 
-    provides :firewall, os: 'linux', platform_family: %w(debian) do |node|
-      node['firewall'] && node['firewall']['ubuntu_iptables']
+    if Chef::Provider.respond_to?(:provides)
+      provides :firewall, os: 'linux', platform_family: %w(debian) do |node|
+        node['firewall'] && node['firewall']['ubuntu_iptables']
+      end
     end
 
     def whyrun_supported?

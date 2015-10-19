@@ -1,7 +1,13 @@
 class Chef
   class Resource::Firewall < Chef::Resource::LWRPBase
-    resource_name(:firewall)
-    provides(:firewall)
+    if Chef::Provider.respond_to?(:provides)
+      resource_name(:firewall)
+      provides(:firewall)
+    else
+      # Chef 11 compatibility
+      self.resource_name = :firewall
+    end
+
     actions(:install, :restart, :disable, :flush, :save)
     default_action(:install)
 

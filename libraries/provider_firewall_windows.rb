@@ -20,7 +20,9 @@ class Chef
   class Provider::FirewallWindows < Chef::Provider::LWRPBase
     include FirewallCookbook::Helpers::Windows
 
-    provides :firewall, os: 'windows'
+    if Chef::Provider.respond_to?(:provides)
+      provides :firewall, os: 'windows'
+    end
 
     def whyrun_supported?
       false

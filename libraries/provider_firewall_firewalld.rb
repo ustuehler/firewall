@@ -19,8 +19,10 @@ class Chef
   class Provider::FirewallFirewalld < Chef::Provider::LWRPBase
     include FirewallCookbook::Helpers::Firewalld
 
-    provides :firewall, os: 'linux', platform_family: %w(rhel fedora) do |node|
-      node['platform_version'].to_f >= 7.0 && !node['firewall']['redhat7_iptables']
+    if Chef::Provider.respond_to?(:provides)
+      provides :firewall, os: 'linux', platform_family: %w(rhel fedora) do |node|
+        node['platform_version'].to_f >= 7.0 && !node['firewall']['redhat7_iptables']
+      end
     end
 
     def whyrun_supported?

@@ -4,8 +4,14 @@ class Chef
   class Resource::FirewallRule < Chef::Resource::LWRPBase
     include FirewallCookbook::Helpers
 
-    resource_name(:firewall_rule)
-    provides(:firewall_rule)
+    if Chef::Provider.respond_to?(:provides)
+      resource_name(:firewall_rule)
+      provides(:firewall_rule)
+    else
+      # Chef 11 compatibility
+      resource_name = :firewall_rule
+    end
+
     actions(:create)
     default_action(:create)
 

@@ -21,8 +21,10 @@ class Chef
   class Provider::FirewallRuleUfw < Chef::Provider::LWRPBase
     include FirewallCookbook::Helpers::Ufw
 
-    provides :firewall_rule, os: 'linux', platform_family: %w(debian) do |node|
-      !(node['firewall'] && node['firewall']['ubuntu_iptables'])
+    if Chef::Provider.respond_to?(:provides)
+      provides :firewall_rule, os: 'linux', platform_family: %w(debian) do |node|
+        !(node['firewall'] && node['firewall']['ubuntu_iptables'])
+      end
     end
 
     action :create do
